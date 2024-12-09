@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Blinky",
+            "request": "launch",
+            "type": "cortex-debug",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/template", //directory to our elf
+            "servertype": "openocd",
+            "configFiles": ["interface/stlink-v2-1.cfg", "target/stm32f4x.cfg"],
+            "preLaunchTask": "Build and Generate files", // This definds priority of tasks
+            "preLaunchCommands": [
+                "monitor init",
+                "monitor reset init",
+                "monitor halt",
+                "monitor flash write_image erase ./target/thumbv7em-none-eabihf/debug/template 0x08000000"
+            ],
+            "postLaunchCommands": ["continue"]
+        }
+    ]
+}

@@ -1,0 +1,2 @@
+type Uart1 = Uart<stm32f4::stm32f401::USART1>;
+static G_UART: Mutex<RefCell<Option<Uart1>>> = Mutex::new(RefCell::new(None));  // Uart instance

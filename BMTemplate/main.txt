@@ -1,0 +1,38 @@
+#![no_std]
+#![no_main]
+
+use panic_halt as _; // Panic handler
+use cortex_m_rt::entry;
+use stm32f4xx_hal::{gpio::{gpioa::PA5, gpioc::PC13, Pull}, prelude::*};
+use stm32f4xx_hal::pac;
+
+#[entry]
+fn main() -> ! {
+    let dp = pac::Peripherals::take().unwrap();
+    let rcc = &dp.RCC;
+    let gpioa = &dp.GPIOA;
+    let gpioc = &dp.GPIOC;
+
+    // Enable GPIOA and GPIOC peripherals by setting respective bits in AHB1ENR
+    rcc.ahb1enr().modify(|_, w| w.gpioaen().set_bit()); // Enable GPIOA
+    rcc.ahb1enr().modify(|_, w| w.gpiocen().set_bit()); // Enable GPIOC
+
+    // Set PA5 (LED) as output
+    gpioa.moder().modify(|_, w| w.moder5().output());
+
+    // Set PC13 (button) as input with pull-up
+    gpioc.moder().modify(|_, w| w.moder13().input());
+    gpioc.pupdr().modify(|_, w| w.pupdr13().pull_up());
+
+    // Main loop
+    loop {
+        // Check if button on PC13 is pressed (low)
+        if gpioc.idr().read().idr13().bit_is_clear() {
+            // Toggle the LED on PA5
+            gpioa.odr().modify(|_, w| w.odr5().set_bit());
+        } else {
+            // Turn off the LED
+            gpioa.odr().modify(|_, w| w.odr5().clear_bit());
+        }
+    }
+}

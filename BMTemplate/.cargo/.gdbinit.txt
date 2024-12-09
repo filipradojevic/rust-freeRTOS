@@ -1,0 +1,13 @@
+# .gdbinit
+
+# Poveži se na target remote
+target remote :3333
+
+# Učitaj program
+load
+
+# Postavi breakpoint na main
+break main
+
+# Nastavi izvršavanje
+continue

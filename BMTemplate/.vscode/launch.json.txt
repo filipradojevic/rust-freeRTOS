@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Rust",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/template",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Enable TUI mode",
+                    "text": "tui enable",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "cargo build",
+            "miDebuggerPath": "C:\\Users\\frado\\Desktop\\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\\bin\\arm-none-eabi-gdb.exe",
+            "setupCommands": [
+                {
+                    "text": "tui enable",
+                    "description": "Enable TUI mode"
+                }
+            ]
+        }
+    ]
+}

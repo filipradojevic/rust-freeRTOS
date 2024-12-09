@@ -1,0 +1,43 @@
+[package]
+name = "freertos-rust-examples"
+version = "0.1.1"
+authors = ["Tobias Kaupat <tk@lobaro.de>"]
+edition = "2018"
+description = """
+Create to use FreeRTOS in rust projects. It contains binaries for demos on some architectures.
+"""
+keywords = ["FreeRTOS", "embedded", "demo", "examples"]
+repository = "https://github.com/lobaro/FreeRTOS-rust"
+
+[dependencies]
+freertos-rust = { path = "../freertos-rust" }
+
+# Dodajte defmt i defmt-rtt
+defmt = { version = "0.3.6" }  # Omogućava defmt ispis
+defmt-rtt = "0.4.1"  # Omogućava RTT ispis za no_std okruženje
+
+# Specifikacije zavisnosti za ARM arhitekturu
+[target.'cfg(target_arch = "arm")'.dependencies]
+cortex-m = "0.6.0"
+cortex-m-rt = { version = "0.6.12" }
+nb = "1.0.0"
+volatile-register = "0.2"
+
+
+# Specifikacije zavisnosti za STM32F4xx seriju
+[target.thumbv7em-none-eabihf.dependencies]
+panic-halt = "0.2.0"
+embedded-hal = "0.2.3"
+stm32f4xx-hal = { version = "0.8.3", features = ["rt", "stm32f401"] }  # Podešavanje za STM32F401
+stm32f4 = { version = "0.14", features = ["stm32f401"] }  # Pac za STM32F401
+
+
+[build-dependencies]
+freertos-cargo-build = { path = "../freertos-cargo-build" }
+
+[[bin]]
+name = "stm32-cortex-m4-f401re"
+path = "examples/stm32-cortex-m4-f401re/Button_isr/main.rs"
+
+[profile.dev]
+debug = true

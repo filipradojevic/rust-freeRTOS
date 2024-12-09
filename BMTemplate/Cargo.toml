@@ -1,0 +1,23 @@
+[package]
+name = "template"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# Dependencies for embedded systems
+cortex-m = "0.7"         # Provides core support for ARM Cortex-M microcontrollers
+cortex-m-rt = "0.7"      # Runtime support for ARM Cortex-M
+panic-halt = "1.0.0"     # Defines the panic behavior (halt in case of panic)
+
+stm32f4xx-hal = { version = "0.22.1", features = ["stm32f401"] }
+
+# STM32F4 crate with the features for STM32F401RE
+stm32f4 = { version = "0.15.1", features = ["stm32f401", "rt"] }
+
+[profile.dev]
+panic = "abort"  # Ensures that the build is optimized for development with no unwinding during panic
+
+[build-dependencies]
+# Optionally, you can add a build dependency to generate bindings or code

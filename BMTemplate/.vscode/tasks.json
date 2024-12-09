@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cargo build",
+            "type": "shell",
+            "command": "cargo",
+            "args": ["build", "--bin=template", "--package=template"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Generate .bin from ELF",
+            "type": "shell",
+            "command": "arm-none-eabi-objcopy",
+            "args": [
+                "-O",
+                "binary",
+                "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/template",
+                "${workspaceFolder}/output.bin"
+            ],
+            "problemMatcher": ["$rustc"],
+            "dependsOn": "cargo build"
+        },
+        {
+            "label": "Generate .dis from ELF",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/C",
+                "arm-none-eabi-objdump -d ${workspaceFolder}/target/thumbv7em-none-eabihf/debug/template > ${workspaceFolder}/output.dis"
+            ],
+            "problemMatcher": [],
+            "dependsOn": "cargo build"
+        },
+        {
+            "label": "Check ELF Size",
+            "type": "shell",
+            "command": "size",
+            "args": [
+                ".\\target\\thumbv7em-none-eabihf\\debug\\template"
+            ],
+            "problemMatcher": [],
+            "dependsOn": "cargo build"
+        },
+        {
+            "label": "Build and Generate files",
+            "type": "shell",
+            "dependsOn": [
+                "cargo build", 
+                "Generate .bin from ELF", 
+                "Generate .dis from ELF", 
+                "Check ELF Size"
+            ],
+            "group": "build"
+        }
+    ]
+}
